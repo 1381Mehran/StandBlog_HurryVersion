@@ -5,4 +5,5 @@ app_name = 'article'
 
 urlpatterns = [
     path('detail/<slug:slug>' , views.article_detail_page , name="article_detail_page"),
+    path('list' , views.articles_list , name="articles_list"),
 ]

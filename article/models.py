@@ -7,6 +7,11 @@ class Category(models.Model):
     title = models.CharField(max_length=15)
     create = models.DateField(auto_now_add=True)
 
+    class Meta:
+        ordering = ('-create',)
+        verbose_name = "Category"
+        verbose_name_plural = "Categories"
+
     def __str__(self):
         return self.title
 
@@ -25,6 +30,9 @@ class Article(models.Model):
 
     create = models.DateTimeField(auto_now_add=True)
     update = models.DateTimeField(auto_now=True)
+
+    # class Meta:
+    #     ordering = ('-update' , '-create')
 
     def save(
         self, force_insert=False, force_update=False, using=None, update_fields=None

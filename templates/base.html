@@ -61,7 +61,7 @@
                         <a class="nav-link" href="about.html">About Us</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="blog.html">Blog Entries</a>
+                        <a class="nav-link" href="{% url "article:articles_list" %}">Blog Entries</a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link" href="post-details.html">Post Details</a>
@@ -73,9 +73,11 @@
                         <div class="d-flex">
                             {% if user.is_authenticated %}
                                 {% if user.profile.image.url %}
-                                    <span><img src="{{ user.profile.image.url }}" style="height: 30px; width: 30px; border-radius: 100%;"></span>
-                                 {% else %}
-                                    <span><img src="{% static "images/icons/icon.png" %}" style="height: 30px; width: 30px; border-radius: 100%;"></span>
+                                    <span><img src="{{ user.profile.image.url }}"
+                                               style="height: 30px; width: 30px; border-radius: 100%;"></span>
+                                {% else %}
+                                    <span><img src="{% static "images/icons/icon.png" %}"
+                                               style="height: 30px; width: 30px; border-radius: 100%;"></span>
                                 {% endif %}
                                 {% if user.first_name or user.last_name %}
                                     <a class="nav-link" href="/admin">{{ user.first_name }} {{ user.last_name }} </a>

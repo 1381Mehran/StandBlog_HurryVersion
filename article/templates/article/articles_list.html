@@ -1,48 +1,30 @@
 {% extends "base.html" %}
+
 {% load static %}
 
+
 {% block title %}
-    StandBlog
+    Articles List
 {% endblock %}
 
 {% block content %}
     <!-- Page Content -->
     <!-- Banner Starts Here -->
-    <div class="main-banner header-text">
-        <div class="container-fluid">
-            <div class="owl-banner owl-carousel">
-                {% for article in articles %}
-                    <div class="item">
-                        <img src="{{ article.image_banner.url }}" alt="{{ article.title }}">
-                        <div class="item-content">
-                            <div class="main-content">
-                                <div class="meta-category">
-                                  <span>
-                                      {{ article.category.all.first }}
-                                      {% if article.category.all.first != article.category.all.last %}
-                                          |{{ article.category.all.last }}
-                                      {% endif %}
-                                  </span>
-                                </div>
-                                <a href="{{ article.get_absolute_url }}"><h4>{{ article.title }}</h4></a>
-                                <ul class="post-info">
-                                    <li><a href="#">
-                                        {% if article.author.get_full_name %}
-                                            {{ article.author.get_full_name }}
-                                        {% else %}
-                                            {{ article.author.username }}
-                                        {% endif %}
-                                    </a></li>
-                                    <li><a href="#">{{ article.update }}</a></li>
-                                    <li><a href="#">12 Comments</a></li>
-                                </ul>
-                            </div>
+    <div class="heading-page header-text">
+        <section class="page-heading">
+            <div class="container">
+                <div class="row">
+                    <div class="col-lg-12">
+                        <div class="text-content">
+                            <h4>Recent Posts</h4>
+                            <h2>Our Recent Blog Entries</h2>
                         </div>
                     </div>
-                {% endfor %}
+                </div>
             </div>
-        </div>
+        </section>
     </div>
+
     <!-- Banner Ends Here -->
 
     <section class="call-to-action">
@@ -57,7 +39,7 @@
                             </div>
                             <div class="col-lg-4">
                                 <div class="main-button">
-                                    <a rel="nofollow" href="https://templatemo.com/tm-551-stand-blog" target="_parent">Download
+                                    <a href="https://templatemo.com/tm-551-stand-blog" target="_parent">Download
                                         Now!</a>
                                 </div>
                             </div>
@@ -69,22 +51,27 @@
     </section>
 
 
-    <section class="blog-posts">
+    <section class="blog-posts grid-system">
         <div class="container">
             <div class="row">
                 <div class="col-lg-8">
                     <div class="all-blog-posts">
                         <div class="row">
-                            {% for article in recentest %}
-                                <div class="col-lg-12">
+                            {% for article in articles %}
+                                <div class="col-lg-6">
                                     <div class="blog-post">
                                         <div class="blog-thumb">
-                                            <img src="{{ article.image_post.url }}" alt="{{ article.title }}">
+                                            <img src="{{ article.image_thumb.url }}" alt="{{ article.title }}">
                                         </div>
                                         <div class="down-content">
-                                        <span>
-                                            {{ article.category.all.first }} {{ article.category.all.last }}
-                                        </span>
+                                            <span>
+                                                {% if article.category.all.first != article.category.all.last %}
+                                                    {{ article.category.all.first }}
+                                                    |{{ article.category.all.last }}
+                                                {% else %}
+                                                    {{ article.category.all.first }}
+                                                {% endif %}
+                                            </span>
                                             <a href="{{ article.get_absolute_url }}"><h4>{{ article.title }}</h4></a>
                                             <ul class="post-info">
                                                 <li><a href="#">
@@ -97,21 +84,14 @@
                                                 <li><a href="#">{{ article.update }}</a></li>
                                                 <li><a href="#">12 Comments</a></li>
                                             </ul>
-                                            <p>{{ article.body }}</p>
+                                            <p>{{ article.body|slice:":110" }}</p>
                                             <div class="post-options">
                                                 <div class="row">
-                                                    <div class="col-6">
+                                                    <div class="col-lg-12">
                                                         <ul class="post-tags">
                                                             <li><i class="fa fa-tags"></i></li>
-                                                            <li><a href="#">Beauty</a>,</li>
-                                                            <li><a href="#">Nature</a></li>
-                                                        </ul>
-                                                    </div>
-                                                    <div class="col-6">
-                                                        <ul class="post-share">
-                                                            <li><i class="fa fa-share-alt"></i></li>
-                                                            <li><a href="#">Facebook</a>,</li>
-                                                            <li><a href="#"> Twitter</a></li>
+                                                            <li><a href="#">Best Templates</a>,</li>
+                                                            <li><a href="#">TemplateMo</a></li>
                                                         </ul>
                                                     </div>
                                                 </div>
@@ -121,9 +101,12 @@
                                 </div>
                             {% endfor %}
                             <div class="col-lg-12">
-                                <div class="main-button">
-                                    <a href="{% url "article:articles_list" %}">View All Posts</a>
-                                </div>
+                                <ul class="page-numbers">
+                                    <li><a href="#">1</a></li>
+                                    <li class="active"><a href="#">2</a></li>
+                                    <li><a href="#">3</a></li>
+                                    <li><a href="#"><i class="fa fa-angle-double-right"></i></a></li>
+                                </ul>
                             </div>
                         </div>
                     </div>
@@ -149,7 +132,7 @@
                                             {% for item in recentest %}
                                                 <li><a href="{{ item.get_absolute_url }}">
                                                 <h5>{{ item.title }}</h5>
-                                                <span>{{item.update}}</span>
+                                                <span>{{ item.update }}</span>
                                             </a></li>
                                             {% endfor %}
                                         </ul>
@@ -164,7 +147,7 @@
                                     <div class="content">
                                         <ul>
                                             {% for item in categories %}
-                                                <li><a href="#">{{ item }}</a></li>
+                                                <li><a href="#">{{ item.title }}</a></li>
                                             {% endfor %}
                                         </ul>
                                     </div>
@@ -194,5 +177,4 @@
             </div>
         </div>
     </section>
-
 {% endblock %}
