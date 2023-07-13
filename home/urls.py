@@ -5,5 +5,6 @@ from . import views
 app_name = "home"
 
 urlpatterns = [
-    path('' , views.home_page , name="home_page")
+    path('' , views.home_page , name="home_page"),
+    path('sidebar/' , views.sidebar , name="sidebar"),
 ]

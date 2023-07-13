@@ -6,11 +6,21 @@ from django.utils.text import slugify
 class Category(models.Model):
     title = models.CharField(max_length=15)
     create = models.DateField(auto_now_add=True)
+    slug = models.SlugField(null=True , unique=True , blank=True , help_text="Don't need To fill")
 
     class Meta:
-        ordering = ('-create',)
+        # ordering = ('-create',)
         verbose_name = "Category"
         verbose_name_plural = "Categories"
+
+    def save(
+        self, force_insert=False, force_update=False, using=None, update_fields=None
+    ):
+        self.slug = slugify(self.title)
+        super(Category , self).save()
+
+    def get_absolute_url(self):
+        return reverse("article:categories_detail" , args=[self.slug])
 
     def __str__(self):
         return self.title

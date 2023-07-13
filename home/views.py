@@ -1,12 +1,13 @@
 from django.shortcuts import render
-from article.models import Article , Category
+from article.models import Article
 
 def home_page(request):
 
     articles = Article.objects.filter(status=True)
 
-    recent_art = Article.objects.filter(status=True).order_by('-update' , '-create')[:3]
+    return render(request , "home/home.html" , {'articles': articles})
 
-    categories = Category.objects.all()[:7]
+def sidebar(request):
+    context = {"name": 'Articles'}
 
-    return render(request , "home/home.html" , {'articles': articles , "categories": categories , "recentest": recent_art})
+    return render(request , "includes/sidebar.html" , context)

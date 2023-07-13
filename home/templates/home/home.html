@@ -1,5 +1,7 @@
 {% extends "base.html" %}
 {% load static %}
+{% load render_partial %}
+{% load social_share %}
 
 {% block title %}
     StandBlog
@@ -20,7 +22,7 @@
                                   <span>
                                       {{ article.category.all.first }}
                                       {% if article.category.all.first != article.category.all.last %}
-                                          |{{ article.category.all.last }}
+                                          | {{ article.category.all.last }}
                                       {% endif %}
                                   </span>
                                 </div>
@@ -75,7 +77,7 @@
                 <div class="col-lg-8">
                     <div class="all-blog-posts">
                         <div class="row">
-                            {% for article in recentest %}
+                            {% for article in recent_article|slice:":3" %}
                                 <div class="col-lg-12">
                                     <div class="blog-post">
                                         <div class="blog-thumb">
@@ -83,7 +85,10 @@
                                         </div>
                                         <div class="down-content">
                                         <span>
-                                            {{ article.category.all.first }} {{ article.category.all.last }}
+                                            {{ article.category.all.first }}
+                                            {% if article.category.all.first != article.category.all.last %}
+                                                | {{ article.category.all.last }}
+                                            {% endif %}
                                         </span>
                                             <a href="{{ article.get_absolute_url }}"><h4>{{ article.title }}</h4></a>
                                             <ul class="post-info">
@@ -110,8 +115,7 @@
                                                     <div class="col-6">
                                                         <ul class="post-share">
                                                             <li><i class="fa fa-share-alt"></i></li>
-                                                            <li><a href="#">Facebook</a>,</li>
-                                                            <li><a href="#"> Twitter</a></li>
+                                                            <li>{% post_to_whatsapp article.get_absolute_url "Whatsapp" %}</li>
                                                         </ul>
                                                     </div>
                                                 </div>
@@ -128,69 +132,7 @@
                         </div>
                     </div>
                 </div>
-                <div class="col-lg-4">
-                    <div class="sidebar">
-                        <div class="row">
-                            <div class="col-lg-12">
-                                <div class="sidebar-item search">
-                                    <form id="search_form" name="gs" method="GET" action="#">
-                                        <input type="text" name="q" class="searchText" placeholder="type to search..."
-                                               autocomplete="on">
-                                    </form>
-                                </div>
-                            </div>
-                            <div class="col-lg-12">
-                                <div class="sidebar-item recent-posts">
-                                    <div class="sidebar-heading">
-                                        <h2>Recent Posts</h2>
-                                    </div>
-                                    <div class="content">
-                                        <ul>
-                                            {% for item in recentest %}
-                                                <li><a href="{{ item.get_absolute_url }}">
-                                                <h5>{{ item.title }}</h5>
-                                                <span>{{item.update}}</span>
-                                            </a></li>
-                                            {% endfor %}
-                                        </ul>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col-lg-12">
-                                <div class="sidebar-item categories">
-                                    <div class="sidebar-heading">
-                                        <h2>Categories</h2>
-                                    </div>
-                                    <div class="content">
-                                        <ul>
-                                            {% for item in categories %}
-                                                <li><a href="#">{{ item }}</a></li>
-                                            {% endfor %}
-                                        </ul>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col-lg-12">
-                                <div class="sidebar-item tags">
-                                    <div class="sidebar-heading">
-                                        <h2>Tag Clouds</h2>
-                                    </div>
-                                    <div class="content">
-                                        <ul>
-                                            <li><a href="#">Lifestyle</a></li>
-                                            <li><a href="#">Creative</a></li>
-                                            <li><a href="#">HTML5</a></li>
-                                            <li><a href="#">Inspiration</a></li>
-                                            <li><a href="#">Motivation</a></li>
-                                            <li><a href="#">PSD</a></li>
-                                            <li><a href="#">Responsive</a></li>
-                                        </ul>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
+                {% render_partial "home:sidebar" %}
             </div>
         </div>
     </section>

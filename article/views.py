@@ -13,8 +13,15 @@ def articles_list(request):
 
     articles = Article.objects.filter(status=True).order_by('-update' , '-create')
 
-    recent_article = Article.objects.filter(status=True).order_by('-update' , '-create')[:3]
+    return render(request , "article/articles_list.html" , {'articles': articles})
 
-    categories = Category.objects.all().order_by('-create',)[:6]
 
-    return render(request , "article/articles_list.html" , {'articles': articles , "recentest": recent_article , "categories": categories})
+def categories_detail(request , slug):
+    category_articles = get_object_or_404(Category , slug=slug)
+    articles = category_articles.article_set.filter(status=True)
+
+    return render(request, "article/articles_list.html" , {"articles": articles})
+
+
+
+
