@@ -1,7 +1,6 @@
 from django.shortcuts import render , get_object_or_404
 from .models import Article , Category
 
-
 def article_detail_page(request , slug):
 
     article = get_object_or_404(Article , slug=slug)
@@ -17,6 +16,7 @@ def articles_list(request):
 
 
 def categories_detail(request , slug):
+
     category_articles = get_object_or_404(Category , slug=slug)
     articles = category_articles.article_set.filter(status=True)
 
