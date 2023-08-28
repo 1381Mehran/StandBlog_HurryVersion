@@ -30,7 +30,7 @@ class Article(models.Model):
 
     author = models.ForeignKey(User , on_delete=models.SET_DEFAULT , default="1")
     title = models.CharField(max_length=25)
-    category = models.ManyToManyField(Category)
+    category = models.ManyToManyField(Category , related_name="articles")
     body = models.TextField()
     image_banner = models.ImageField(upload_to="images/banners")
     image_post = models.ImageField(upload_to="images/posts")
@@ -55,3 +55,13 @@ class Article(models.Model):
 
     def __str__(self):
         return f"{self.title} - {self.author}"
+
+class Comment(models.Model):
+    article = models.ForeignKey(Article , on_delete=models.CASCADE , related_name="comments")
+    user = models.ForeignKey(User , on_delete=models.CASCADE , related_name="comments")
+    parent = models.ForeignKey("self" , on_delete=models.CASCADE , null=True , blank=True , related_name="reply")
+    body = models.TextField()
+    created = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return f"{self.user.username} - {self.article.title}"
