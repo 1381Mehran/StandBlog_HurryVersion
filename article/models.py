@@ -1,3 +1,4 @@
+from datetime import datetime
 from django.db import models
 from django.contrib.auth.models import User
 from django.urls import reverse
@@ -65,3 +66,14 @@ class Comment(models.Model):
 
     def __str__(self):
         return f"{self.user.username} - {self.article.title}"
+
+class Contact(models.Model):
+    name = models.CharField(max_length=20)
+    email = models.EmailField()
+    subject = models.CharField(max_length=25)
+    Massage = models.TextField(null=True)
+
+    date = models.DateTimeField(default=datetime.now())
+
+    def __str__(self):
+        return f'{self.subject} - {self.name}'
