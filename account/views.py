@@ -1,6 +1,8 @@
 from django.shortcuts import render , redirect
 from django.contrib.auth import login , authenticate, logout
 from django.contrib.auth.models import User
+from .forms import LoginForm, SignUpForm, EditForm
+
 
 def login_page(request):
     context = {'errors':[]}
@@ -9,19 +11,14 @@ def login_page(request):
         return redirect("home:home_page")
 
     if request.method == "POST":
-        username = request.POST.get("username")
-        password = request.POST.get("password")
-
-        user = authenticate(request , username=username , password=password)
-
-        if user is not None :
+        form = LoginForm(request.POST)
+        if form.is_valid():
+            user = User.objects.get(username=form.cleaned_data.get("username"))
             login(request , user)
             return redirect("home:home_page")
-        else:
-            context['errors'].append("User is not Exist")
-            return render(request , "account/login.html" , context)
-
-    return render(request , "account/login.html")
+    else:
+        form = LoginForm()
+    return render(request , "account/login.html" , {'form': form})
 
 
 def log_out(request):
@@ -30,25 +27,34 @@ def log_out(request):
 
 
 def register_page(request):
-
-    context = {'errors': []}
-
     if request.user.is_authenticated:
         return redirect("home:home_page")
 
     if request.method == "POST":
-        username = request.POST.get("username")
-        email = request.POST.get("email")
-        password1 = request.POST.get("password1")
-        password2 = request.POST.get("password2")
+        form = SignUpForm(request.POST)
 
-        if password1 != password2:
-            context['errors'].append("Passwords are not same")
-            return render(request, "account/register.html" , context)
+        if form.is_valid():
+            username = form.cleaned_data.get('username')
+            email = form.cleaned_data.get('email')
+            confirm_password = form.cleaned_data.get('confirm_password')
+            user = User.objects.create(username=username , email=email , password=confirm_password)
+            login(request , user)
+            return redirect("home:home_page")
+    else:
+        form = SignUpForm()
 
-        user = User.objects.create(username=username , email=email , password=password2)
-        login(request , user)
+    return render(request , "account/register.html" , {'form': form})
+
+def edit_page(request):
+
+    if not request.user.is_authenticated:
         return redirect("home:home_page")
 
-    return render(request , "account/register.html")
+    user = request.user
+    form = EditForm(instance=user)
+    if request.method == "POST":
+        form = EditForm(instance=user , data=request.POST)
+        if form.is_valid():
+            form.save()
 
+    return render(request , 'account/EditForm.html' , {'form': form , 'user' : user})

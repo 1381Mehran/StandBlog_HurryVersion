@@ -1,5 +1,5 @@
 from django.shortcuts import render , get_object_or_404 , redirect
-from .models import Article, Category, Comment, Contact
+from .models import Article, Category, Comment
 from django.core.paginator import Paginator
 from .forms import ContactUs, MassageForm
 
@@ -47,12 +47,11 @@ def contact_us(request):
     if request.method == "POST":
         form = MassageForm(request.POST)
         if form.is_valid():
-            name = form.cleaned_data["name"]
-            email = form.cleaned_data["email"]
-            subject = form.cleaned_data["subject"]
-            massage = form.cleaned_data["Massage"]
+            instance = form.save(commit=False)
 
-            Contact.objects.create(name=name , email=email , subject=subject , Massage=massage)
+            instance.name += "_member"
+
+            instance.save()
 
             return redirect("home:home_page")
 
@@ -61,3 +60,5 @@ def contact_us(request):
 
     return render(request , "article/contactUs.html", {"form": form})
 
+def about_page(request):
+    return render(request , "article/About_Us.html")

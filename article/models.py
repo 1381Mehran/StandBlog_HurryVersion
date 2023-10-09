@@ -73,7 +73,7 @@ class Contact(models.Model):
     subject = models.CharField(max_length=25)
     Massage = models.TextField(null=True)
 
-    date = models.DateTimeField(default=datetime.now())
+    date = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
         return f'{self.subject} - {self.name}'

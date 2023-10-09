@@ -1,6 +1,5 @@
 from django import forms
 from django.core.validators import ValidationError
-
 from article.models import Contact
 
 
@@ -34,6 +33,23 @@ class ContactUs(forms.Form):
 class MassageForm(forms.ModelForm):
     class Meta :
         model = Contact
-        # fields = '__all__'
+        fields = '__all__'
         # fields = ("name" , 'email' , 'subject' , 'Massage')
-        exclude = ("date",)
+        # exclude = ("date",)
+        widgets = {
+            "name" : forms.TextInput(attrs={
+                "class" : "form-control",
+                'placeholder' : 'example : Sepehr',
+            }),
+            "email" : forms.TextInput(attrs={
+               'class' : "form-control",
+               'placeholder' : 'example@example.com'
+            }),
+            "subject": forms.TextInput(attrs={
+                'class': "form-control",
+                'placeholder': 'create Training Course'
+            }),
+            "Massage": forms.Textarea(attrs={
+                'class' : 'form-control',
+            })
+        }

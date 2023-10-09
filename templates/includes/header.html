@@ -1,31 +1,31 @@
 {% load static %}
 
 <nav class="navbar navbar-expand-lg">
-        <div class="container">
-            <a class="navbar-brand" href="{% url "home:home_page" %}"><h2>Stand Blog<em>.</em></h2></a>
-            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarResponsive"
-                    aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
-                <span class="navbar-toggler-icon"></span>
-            </button>
-            <div class="collapse navbar-collapse" id="navbarResponsive">
-                <ul class="navbar-nav ml-auto">
-                    <li class="nav-item {% if request.resolver_match.url_name == "home_page" %}active{% endif %}">
-                        <a class="nav-link" href="{% url "home:home_page" %}">Home
-                            <span class="sr-only">(current)</span>
-                        </a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="about.html">About Us</a>
-                    </li>
-                    <li class="nav-item {% if request.resolver_match.url_name == "articles_list" %}active{% endif %}">
-                        <a class="nav-link" href="{% url "article:articles_list" %}">Articles</a>
-                    </li>
-                    <li class="nav-item {% if request.resolver_match.url_name == "contact_us" %} active {% endif %}">
-                        <a class="nav-link" href="{% url "article:contact_us" %}">Contact Us</a>
-                    </li>
-                    <li class="nav-item">
-                        <div class="d-flex">
-                            {% if user.is_authenticated %}
+    <div class="container">
+        <a class="navbar-brand" href="{% url "home:home_page" %}"><h2>Stand Blog<em>.</em></h2></a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarResponsive"
+                aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarResponsive">
+            <ul class="navbar-nav ml-auto">
+                <li class="nav-item {% if request.resolver_match.url_name == "home_page" %}active{% endif %}">
+                    <a class="nav-link" href="{% url "home:home_page" %}">Home
+                        <span class="sr-only">(current)</span>
+                    </a>
+                </li>
+                <li class="nav-item {% if request.resolver_match.url_name == "about_page" %} active {% endif %} ">
+                    <a class="nav-link" href="{% url "article:about_page" %}">About Us</a>
+                </li>
+                <li class="nav-item {% if request.resolver_match.url_name == "articles_list" %}active{% endif %}">
+                    <a class="nav-link" href="{% url "article:articles_list" %}">Articles</a>
+                </li>
+                <li class="nav-item {% if request.resolver_match.url_name == "contact_us" %} active {% endif %}">
+                    <a class="nav-link" href="{% url "article:contact_us" %}">Contact Us</a>
+                </li>
+                <li class="nav-item">
+                    <div class="d-flex">
+                        {% if user.is_authenticated %}
                                 {% if user.profile.image.url %}
                                     <span><img src="{{ user.profile.image.url }}"
                                                style="height: 30px; width: 30px; border-radius: 100%;"></span>
@@ -33,19 +33,30 @@
                                     <span><img src="{% static "images/icons/icon.png" %}"
                                                style="height: 30px; width: 30px; border-radius: 100%;"></span>
                                 {% endif %}
-                                {% if user.first_name or user.last_name %}
-                                    <a class="nav-link" href="/admin">{{ user.first_name }} {{ user.last_name }} </a>
-                                {% else %}
-                                    <a class="nav-link" href="/admin">{{ user.username }}</a>
-                                {% endif %}
-                                <a class="nav-link text-danger" href="{% url "account:log_out" %}">logout</a>
-                            {% else %}
-                                <a class="nav-link" href="{% url 'account:login_page' %}">login</a>
-                                <a class="nav-link" href="{% url "account:register_page" %}">register</a>
-                            {% endif %}
-                        </div>
-                    </li>
-                </ul>
-            </div>
+                                <div class="nav-item dropdown d-flex">
+                                    <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink"
+                                       role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                        {% if user.first_name or user.last_name %}
+                                            <a class="nav-link"
+                                               href="/admin">{{ user.first_name }} {{ user.last_name }} </a>
+                                        {% else %}
+                                            <a class="nav-link" href="/admin">{{ user.username }}</a>
+                                        {% endif %}
+                                    </a>
+                                    <ul class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+                                        <li><a class="dropdown-item text-success font-weight-bold" href="{% url "account:edit Page" %}">Edit</a>
+                                        </li>
+                                        <li><a class="dropdown-item text-danger font-weight-bold" href="{% url "account:log_out" %}">Logout</a>
+                                        </li>
+                                    </ul>
+                                </div>
+                        {% else %}
+                            <a class="nav-link" href="{% url 'account:login_page' %}">login</a>
+                            <a class="nav-link" href="{% url "account:register_page" %}">register</a>
+                        {% endif %}
+                    </div>
+                </li>
+            </ul>
         </div>
-    </nav>
+    </div>
+</nav>
